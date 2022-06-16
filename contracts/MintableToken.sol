@@ -15,7 +15,6 @@ contract MintableToken is KIP7Mintable, OwnableToken{
     bool public mintingFinished = false;
 
     modifier canMint() { require(!mintingFinished); _; }
-    modifier cantMint() { require(mintingFinished); _; }
 
     function mint(address _to, uint256 _amount) onlyOwner canMint public returns (bool){
         return super.mint(_to, _amount);
@@ -37,12 +36,6 @@ contract MintableToken is KIP7Mintable, OwnableToken{
     function finishMinting() onlyOwner canMint public returns (bool) {
         mintingFinished = true;
         emit MintFinished();
-        return true;
-    }
-
-    function reStartMinting() onlyOwner cantMint public returns (bool) {
-        mintingFinished = false;
-        emit MintReStart();
         return true;
     }
 }
